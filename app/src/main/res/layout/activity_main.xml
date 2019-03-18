@@ -6,49 +6,48 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".MainActivity">
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
-            android:id="@+id/textView" android:text="@string/matchup" android:textSize="30sp"
-            android:layout_marginTop="16dp" app:layout_constraintTop_toTopOf="parent"/>
+
     <Button
-            android:text="Generate Tournament"
+            android:text="Next"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/button" android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"/>
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/textView2" android:text="@string/tournament_name"
-            android:textSize="18sp" app:layout_constraintStart_toStartOf="@+id/editText"
-            android:layout_marginStart="8dp" android:layout_marginTop="24dp"
-            app:layout_constraintTop_toBottomOf="@+id/textView"/>
+            android:id="@+id/next_button"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp"/>
+
     <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
             android:ems="10"
-            android:id="@+id/editText"
-            app:layout_constraintTop_toBottomOf="@+id/textView2" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="16dp" app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="16dp"/>
-    <CheckBox
+            android:id="@+id/tournament_name"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="16dp"
+            android:hint="Tournament Name"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+    <Switch
             android:text="Group Stages"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/hasGroupStages" android:textSize="18sp"
-            android:layout_marginTop="16dp" app:layout_constraintTop_toBottomOf="@+id/editText"
-            app:layout_constraintStart_toStartOf="@+id/editText"/>
-    <ScrollView
-            android:layout_width="379dp"
-            android:layout_height="445dp" android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@+id/hasGroupStages" app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="16dp" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="16dp">
-        <ListView
-                android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/listView"/>
-    </ScrollView>
+            android:id="@+id/group_stages"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/tournament_name"
+            app:layout_constraintStart_toStartOf="@+id/tournament_name"
+            android:layout_marginStart="8dp"
+            android:textSize="18sp"/>
+    <!--<NestedScrollView-->
+            <!--android:layout_width="379dp"-->
+            <!--android:layout_height="445dp" android:layout_marginTop="16dp"-->
+            <!--app:layout_constraintTop_toBottomOf="@+id/hasGroupStages" app:layout_constraintEnd_toEndOf="parent"-->
+            <!--android:layout_marginEnd="16dp" app:layout_constraintStart_toStartOf="parent"-->
+            <!--android:layout_marginStart="16dp">-->
+    <!--</NestedScrollView>-->
 </android.support.constraint.ConstraintLayout>

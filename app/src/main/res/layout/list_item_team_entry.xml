@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" android:id="@+id/team_name">
+
+    <ImageView
+            android:layout_centerVertical="true"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:id="@+id/list_item_team_image"
+            app:srcCompat="@drawable/placeholder_team"
+            android:contentDescription="@string/team_logo"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:layout_gravity="center_vertical"
+            android:id="@+id/list_item_team_name"
+            android:layout_marginStart="100dp"
+            android:textSize="32sp"/>
+
+</RelativeLayout>

@@ -1,4 +1,4 @@
-package me.jamestoohey.matchup
+package me.jamestoohey.matchup.activities
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
@@ -8,9 +8,10 @@ import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.widget.Button
 import android.widget.ListView
-import android.widget.Toast
-import me.jamestoohey.matchup.team.TeamEntity
-import me.jamestoohey.matchup.team.TeamViewModel
+import me.jamestoohey.matchup.R
+import me.jamestoohey.matchup.adapters.TeamEntryAdapter
+import me.jamestoohey.matchup.data.entity.Team
+import me.jamestoohey.matchup.viewmodel.TeamViewModel
 
 class TournamentTeamsActivity : AppCompatActivity() {
 
@@ -25,14 +26,13 @@ class TournamentTeamsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_tournament_teams)
         title = intent.getStringExtra("tournament_name")
         val tournamentId = intent.getLongExtra("tournament_id", -1)
-        Toast.makeText(this, "$tournamentId", Toast.LENGTH_LONG).show()
 
         listView = findViewById(R.id.tournament_team_list)
         listAdapter = TeamEntryAdapter(this)
         listView.adapter = listAdapter
 
         teamViewModel = ViewModelProviders.of(this).get(TeamViewModel::class.java)
-        teamViewModel.getTeamsForTournament(tournamentId).observe(this, Observer<List<TeamEntity>> {
+        teamViewModel.getTeamsForTournament(tournamentId).observe(this, Observer<List<Team>> {
             if (it != null) {
                 listAdapter.setTeams(it.toList())
             } else {
@@ -46,7 +46,7 @@ class TournamentTeamsActivity : AppCompatActivity() {
 
 
         addTeamsButton.setOnClickListener {
-            val intent = Intent(this, SelectTournamentTeamsActivity::class.java)
+            val intent = Intent(this, SelectTeamsActivity::class.java)
             intent.putExtra("tournament_id", tournamentId)
             startActivity(intent)
         }

@@ -1,15 +1,15 @@
-package me.jamestoohey.matchup
+package me.jamestoohey.matchup.viewmodel
 
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
-import android.util.Log
-import me.jamestoohey.matchup.team.TeamEntity
-import me.jamestoohey.matchup.team.TeamRepository
+import me.jamestoohey.matchup.data.entity.Team
+import me.jamestoohey.matchup.repository.TeamRepository
 
 class SelectTournamentTeamsViewModel(application: Application): AndroidViewModel(application) {
-    private val teamRepository: TeamRepository = TeamRepository(application)
-    private val allTeams: LiveData<List<TeamEntity>>
+    private val teamRepository: TeamRepository =
+        TeamRepository(application)
+    private val allTeams: LiveData<List<Team>>
 //    private var tournamentId: Long = -1
 
     init {
@@ -21,19 +21,19 @@ class SelectTournamentTeamsViewModel(application: Application): AndroidViewModel
 //        teamsForTournament = getTeamsForTournament()
 //    }
 
-    fun getAllTeams(): LiveData<List<TeamEntity>> {
+    fun getAllTeams(): LiveData<List<Team>> {
         return allTeams
     }
 
-    fun getTeamsForTournament(tournamentId: Long): LiveData<List<TeamEntity>> {
+    fun getTeamsForTournament(tournamentId: Long): LiveData<List<Team>> {
         return teamRepository.getTeamsForTournament(tournamentId)
     }
 
-    fun insert(teamEntity: TeamEntity) {
-        teamRepository.insert(teamEntity)
+    fun insert(team: Team) {
+        teamRepository.insert(team)
     }
 
-    fun updateTeamsInTournament(teamsForTournament: List<TeamEntity>, changedTeams: List<TeamEntity>, tournamentId: Long) {
+    fun updateTeamsInTournament(teamsForTournament: List<Team>, changedTeams: List<Team>, tournamentId: Long) {
 
         changedTeams.forEach {
             if (teamsForTournament.contains(it)) {

@@ -1,15 +1,17 @@
-package me.jamestoohey.matchup
+package me.jamestoohey.matchup.data
 
 import android.arch.persistence.room.Database
 import android.arch.persistence.room.Room
 import android.arch.persistence.room.RoomDatabase
 import android.content.Context
-import me.jamestoohey.matchup.team.TeamDao
-import me.jamestoohey.matchup.team.TeamEntity
-import me.jamestoohey.matchup.tournament.TournamentDao
-import me.jamestoohey.matchup.tournament.TournamentEntity
+import me.jamestoohey.matchup.data.dao.TournamentTeamJoinDao
+import me.jamestoohey.matchup.data.entity.TournamentTeamJoin
+import me.jamestoohey.matchup.data.dao.TeamDao
+import me.jamestoohey.matchup.data.entity.Team
+import me.jamestoohey.matchup.data.dao.TournamentDao
+import me.jamestoohey.matchup.data.entity.Tournament
 
-@Database(entities = [TeamEntity::class, TournamentEntity::class, TournamentTeamJoin::class], version = 3)
+@Database(entities = [Team::class, Tournament::class, TournamentTeamJoin::class], version = 3)
 abstract class AppDatabase: RoomDatabase() {
     abstract fun teamDao(): TeamDao
     abstract fun tournamentDao(): TournamentDao
@@ -20,7 +22,8 @@ abstract class AppDatabase: RoomDatabase() {
 
         fun getInstance(context: Context): AppDatabase {
             return instance ?: synchronized(this) {
-                instance ?: buildDatabase(context).also { instance = it }
+                instance
+                    ?: buildDatabase(context).also { instance = it }
             }
         }
 

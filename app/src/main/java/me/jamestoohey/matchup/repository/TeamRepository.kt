@@ -1,43 +1,45 @@
-package me.jamestoohey.matchup.team
+package me.jamestoohey.matchup.repository
 
 import android.arch.lifecycle.LiveData
 import android.content.Context
 import android.os.AsyncTask
-import me.jamestoohey.matchup.AppDatabase
-import me.jamestoohey.matchup.TournamentTeamJoin
-import me.jamestoohey.matchup.TournamentTeamJoinDao
+import me.jamestoohey.matchup.data.AppDatabase
+import me.jamestoohey.matchup.data.entity.TournamentTeamJoin
+import me.jamestoohey.matchup.data.dao.TournamentTeamJoinDao
+import me.jamestoohey.matchup.data.entity.Team
+import me.jamestoohey.matchup.data.dao.TeamDao
 
 class TeamRepository(val context: Context) {
 
     private val teamDao: TeamDao = AppDatabase.getInstance(context).teamDao()
     private val tournamentTeamJoinDao = AppDatabase.getInstance(context).tournamentTeamJoinDao()
 
-    fun getAllTeams(): LiveData<List<TeamEntity>> {
+    fun getAllTeams(): LiveData<List<Team>> {
         return teamDao.getAllTeams()
     }
 
-    fun insert(teamEntity: TeamEntity) {
-        TeamInsertAsyncTask(teamDao).execute(teamEntity)
+    fun insert(team: Team) {
+        TeamInsertAsyncTask(teamDao).execute(team)
     }
 
-    fun getTeamsForTournament(id: Long): LiveData<List<TeamEntity>> {
+    fun getTeamsForTournament(id: Long): LiveData<List<Team>> {
         return tournamentTeamJoinDao.getTeamsForTournament(id)
     }
 
 
-    fun insertTeamToTournament(teamEntity: TeamEntity, tournamentId: Long) {
-        val tournamentTeamJoin = TournamentTeamJoin(tournamentId, teamEntity.teamId)
+    fun insertTeamToTournament(team: Team, tournamentId: Long) {
+        val tournamentTeamJoin = TournamentTeamJoin(tournamentId, team.teamId)
         TeamToTournamentInsertAsyncTask(tournamentTeamJoinDao).execute(tournamentTeamJoin)
     }
 
-    fun removeTeamFromTournament(teamEntity: TeamEntity, tournamentId: Long) {
-        val tournamentTeamJoin = TournamentTeamJoin(tournamentId, teamEntity.teamId)
+    fun removeTeamFromTournament(team: Team, tournamentId: Long) {
+        val tournamentTeamJoin = TournamentTeamJoin(tournamentId, team.teamId)
         TeamToTournamentDeleteAsyncTask(tournamentTeamJoinDao).execute(tournamentTeamJoin)
     }
 }
 
-class TeamInsertAsyncTask(private val teamDao: TeamDao) : AsyncTask<TeamEntity, Void, Unit>() {
-    override fun doInBackground(vararg team: TeamEntity) {
+class TeamInsertAsyncTask(private val teamDao: TeamDao) : AsyncTask<Team, Void, Unit>() {
+    override fun doInBackground(vararg team: Team) {
         teamDao.insert(team[0])
     }
 }

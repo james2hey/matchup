@@ -1,4 +1,4 @@
-package me.jamestoohey.matchup
+package me.jamestoohey.matchup.activities
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
@@ -8,10 +8,12 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.ListView
-import me.jamestoohey.matchup.team.TeamEntity
-import me.jamestoohey.matchup.team.TeamViewModel
+import me.jamestoohey.matchup.R
+import me.jamestoohey.matchup.viewmodel.SelectTournamentTeamsViewModel
+import me.jamestoohey.matchup.adapters.TeamEntryCheckedAdapter
+import me.jamestoohey.matchup.data.entity.Team
 
-class SelectTournamentTeamsActivity : AppCompatActivity() {
+class SelectTeamsActivity : AppCompatActivity() {
 
     private lateinit var okButton: Button
     private lateinit var cancelButton: Button
@@ -19,7 +21,7 @@ class SelectTournamentTeamsActivity : AppCompatActivity() {
     private lateinit var listAdapter: TeamEntryCheckedAdapter
     private lateinit var selectTournamentTeamsViewModel: SelectTournamentTeamsViewModel
     private lateinit var listView: ListView
-    private lateinit var teamsForTournament: List<TeamEntity>
+    private lateinit var teamsForTournament: List<Team>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,15 +32,15 @@ class SelectTournamentTeamsActivity : AppCompatActivity() {
         val tournamentId = intent.getLongExtra("tournament_id", -1)
 
         selectTournamentTeamsViewModel = ViewModelProviders.of(this).get(SelectTournamentTeamsViewModel::class.java)
-//        selectTournamentTeamsViewModel.setTournamentId(tournamentId)
-        selectTournamentTeamsViewModel.getAllTeams().observe(this, Observer<List<TeamEntity>> {
+        selectTournamentTeamsViewModel.getAllTeams().observe(this, Observer<List<Team>> {
             if (it != null) listAdapter.setTeams(it) else {
                 listAdapter.setTeams(emptyList())
             }
         })
 
-        selectTournamentTeamsViewModel.getTeamsForTournament(tournamentId).observe(this, Observer<List<TeamEntity>> {
+        selectTournamentTeamsViewModel.getTeamsForTournament(tournamentId).observe(this, Observer<List<Team>> {
             teamsForTournament = it ?: emptyList()
+            listAdapter.setCheckedTeams(teamsForTournament)
         })
 
         okButton = findViewById(R.id.ok_button)

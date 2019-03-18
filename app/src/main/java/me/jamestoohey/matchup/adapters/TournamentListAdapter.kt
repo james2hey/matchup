@@ -1,4 +1,4 @@
-package me.jamestoohey.matchup
+package me.jamestoohey.matchup.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,22 +6,23 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
-import me.jamestoohey.matchup.team.TeamEntity
+import me.jamestoohey.matchup.R
+import me.jamestoohey.matchup.data.entity.Tournament
 
-class TeamEntryAdapter(
-    context: Context): BaseAdapter() {
-    private var dataSource = emptyList<TeamEntity>()
+class TournamentListAdapter(
+    context: Context
+): BaseAdapter() {
+    private var dataSource = emptyList<Tournament>()
 
     private val inflater: LayoutInflater
             = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
     private class ViewHolder {
-        lateinit var teamName: TextView
-//        lateinit var teamImage: ImageView
+        lateinit var tournamentName: TextView
     }
 
-    fun setTeams(teams: List<TeamEntity>) {
-        dataSource = teams
+    fun setTournaments(tournamentList: List<Tournament>) {
+        dataSource = tournamentList
         notifyDataSetChanged()
     }
 
@@ -29,7 +30,7 @@ class TeamEntryAdapter(
         return dataSource.size
     }
 
-    override fun getItem(position: Int): Any {
+    override fun getItem(position: Int): Tournament {
         return dataSource[position]
     }
 
@@ -41,19 +42,19 @@ class TeamEntryAdapter(
         val view: View
         val holder: ViewHolder
         if (convertView == null) {
-            view = inflater.inflate(R.layout.list_item_team_entry, parent, false)
+            view = inflater.inflate(R.layout.tournament_list_item, parent, false)
 
             holder = ViewHolder()
-            holder.teamName = view.findViewById(R.id.list_item_team_name) as TextView
+            holder.tournamentName = view.findViewById(R.id.tournament_title) as TextView
 
             view.tag = holder
         } else {
             view = convertView
             holder = convertView.tag as ViewHolder
         }
-        val teamName: TextView = holder.teamName
-        val team = getItem(position) as TeamEntity
-        teamName.text = team.name
+        val tournamentName: TextView = holder.tournamentName
+        val tournament = getItem(position) as Tournament
+        tournamentName.text = tournament.title
         return view
     }
 

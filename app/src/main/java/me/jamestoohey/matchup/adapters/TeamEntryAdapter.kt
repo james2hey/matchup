@@ -1,18 +1,17 @@
-package me.jamestoohey.matchup
+package me.jamestoohey.matchup.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import android.widget.CheckBox
 import android.widget.TextView
-import me.jamestoohey.matchup.team.TeamEntity
+import me.jamestoohey.matchup.R
+import me.jamestoohey.matchup.data.entity.Team
 
-class TeamEntryCheckedAdapter(
+class TeamEntryAdapter(
     context: Context): BaseAdapter() {
-    private var dataSource = emptyList<TeamEntity>()
-    private var stateChangeStack = emptySet<TeamEntity>()
+    private var dataSource = emptyList<Team>()
 
     private val inflater: LayoutInflater
             = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -20,16 +19,11 @@ class TeamEntryCheckedAdapter(
     private class ViewHolder {
         lateinit var teamName: TextView
 //        lateinit var teamImage: ImageView
-        lateinit var checked: CheckBox
     }
 
-    fun setTeams(teams: List<TeamEntity>) {
+    fun setTeams(teams: List<Team>) {
         dataSource = teams
         notifyDataSetChanged()
-    }
-
-    fun getChangedTeams(): List<TeamEntity> {
-        return stateChangeStack.toList()
     }
 
     override fun getCount(): Int {
@@ -48,11 +42,10 @@ class TeamEntryCheckedAdapter(
         val view: View
         val holder: ViewHolder
         if (convertView == null) {
-            view = inflater.inflate(R.layout.list_item_team_entry_checked, parent, false)
+            view = inflater.inflate(R.layout.list_item_team_entry, parent, false)
 
             holder = ViewHolder()
             holder.teamName = view.findViewById(R.id.list_item_team_name) as TextView
-            holder.checked = view.findViewById(R.id.check_box) as CheckBox
 
             view.tag = holder
         } else {
@@ -60,17 +53,12 @@ class TeamEntryCheckedAdapter(
             holder = convertView.tag as ViewHolder
         }
         val teamName: TextView = holder.teamName
-        val checkBox: CheckBox = holder.checked
-
-//        val teamName: EditText = rowView.findViewById(R.id.list_item_team_name)
-        val team = getItem(position) as TeamEntity
+        val team = getItem(position) as Team
         teamName.text = team.name
 
+        view.setOnClickListener{
 
-        checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
-            if(stateChangeStack.contains(team)) stateChangeStack = stateChangeStack.minus(team) else  stateChangeStack = stateChangeStack.plus(team)
         }
-
         return view
     }
 

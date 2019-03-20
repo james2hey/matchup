@@ -6,8 +6,6 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.*
 import android.arch.lifecycle.ViewModelProviders
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.LinearLayoutManager
 import me.jamestoohey.matchup.R
 import me.jamestoohey.matchup.adapters.TournamentListAdapter
 import me.jamestoohey.matchup.data.entity.Tournament
@@ -16,27 +14,28 @@ import me.jamestoohey.matchup.viewmodel.TournamentViewModel
 class MainActivity : AppCompatActivity() {
 
     private lateinit var tournamentName: EditText
-//    private lateinit var groupStages: Switch
-    private lateinit var nextButton: Button
+    private lateinit var createButton: Button
     private lateinit var listView: ListView
     private lateinit var tournamentViewModel: TournamentViewModel
     private lateinit var listAdapter: TournamentListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_main)
 
-        tournamentViewModel = ViewModelProviders.of(this).get(TournamentViewModel::class.java)
-
         tournamentName = findViewById(R.id.tournament_name)
-//        groupStages = findViewById(R.id.group_stages)
-        nextButton = findViewById(R.id.next_button)
+        createButton = findViewById(R.id.create_button)
         listView = findViewById(R.id.tournament_list_view)
 
         listAdapter = TournamentListAdapter(this)
         listView.adapter = listAdapter
 
+        observeViewModel()
+        setButtonListeners()
+    }
+
+    private fun observeViewModel() {
+        tournamentViewModel = ViewModelProviders.of(this).get(TournamentViewModel::class.java)
         tournamentViewModel.getAllTournaments().observe(this, Observer<List<Tournament>> {
             if (it != null) {
                 listAdapter.setTournaments(it.toList())
@@ -44,7 +43,9 @@ class MainActivity : AppCompatActivity() {
                 listAdapter.setTournaments(emptyList())
             }
         })
-        
+    }
+
+    private fun setButtonListeners() {
         listView.setOnItemClickListener { parent, view, position, id ->
             val selectedTournament = listAdapter.getItem(position)
             val intent = Intent(this, TournamentTeamsActivity::class.java)
@@ -53,11 +54,12 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-//        nextButton.setOnClickListener {
-//            val intent = Intent(this, TournamentTeamsActivity::class.java)
-//            intent.putExtra("tournament_name", tournamentName.text.toString())
-//            intent.putExtra("tournament_id", tournamentId) //TODO make this use the inserted tournament id lul
-//            startActivity(intent)
-//        }
+        createButton.setOnClickListener {
+            val tournamentId = tournamentViewModel.insert(Tournament(tournamentName.text.toString(), false))
+            val intent = Intent(this, TournamentTeamsActivity::class.java)
+            intent.putExtra("tournament_name", tournamentName.text.toString())
+            intent.putExtra("tournament_id", tournamentId)
+            startActivity(intent)
+        }
     }
 }

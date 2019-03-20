@@ -14,7 +14,7 @@ class TeamEntryCheckedAdapter(
     context: Context): BaseAdapter() {
     private var dataSource = emptyList<Team>()
     private var teamsToCheck = emptyList<Team>()
-    private var stateChangeStack = emptySet<Team>()
+    private var stateChangeSet = emptySet<Team>()
 
     private val inflater: LayoutInflater
             = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -31,7 +31,7 @@ class TeamEntryCheckedAdapter(
     }
 
     fun getChangedTeams(): List<Team> {
-        return stateChangeStack.toList()
+        return stateChangeSet.toList()
     }
 
     override fun getCount(): Int {
@@ -69,7 +69,7 @@ class TeamEntryCheckedAdapter(
         checkBox.isChecked = teamsToCheck.contains(team)
 
         checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
-            if(stateChangeStack.contains(team)) stateChangeStack = stateChangeStack.minus(team) else  stateChangeStack = stateChangeStack.plus(team)
+            stateChangeSet = if(stateChangeSet.contains(team)) stateChangeSet.minus(team) else stateChangeSet.plus(team)
         }
 
         return view

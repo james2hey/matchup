@@ -23,7 +23,10 @@ class MatchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_match)
+
         val tournamentId = intent.getLongExtra("tournament_id", -1)
+        val tournamentName = intent.getStringExtra("tournament_name")
+        title = tournamentName
 
         recyclerView = findViewById(R.id.match_recycler_view)
         val layoutManager = LinearLayoutManager(this)
@@ -37,6 +40,5 @@ class MatchActivity : AppCompatActivity() {
             matches = it ?: emptyList()
             adapter.setMatches(matches)
         })
-
     }
 }

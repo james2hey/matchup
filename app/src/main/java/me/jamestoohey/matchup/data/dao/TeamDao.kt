@@ -12,6 +12,6 @@ interface TeamDao {
     fun getAllTeams(): LiveData<List<Team>>
 
     @Insert
-    fun insert(team: Team)
+    fun insert(team: Team): Long
 }
 

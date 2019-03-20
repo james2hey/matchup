@@ -14,18 +14,11 @@ class TeamRepository(val context: Context) {
     private val teamDao: TeamDao = AppDatabase.getInstance(context).teamDao()
     private val tournamentTeamJoinDao = AppDatabase.getInstance(context).tournamentTeamJoinDao()
 
-    fun getAllTeams(): LiveData<List<Team>> {
-        return teamDao.getAllTeams()
-    }
+    fun getAllTeams(): LiveData<List<Team>> = teamDao.getAllTeams()
 
-    fun insert(team: Team) {
-        TeamInsertAsyncTask(teamDao).execute(team)
-    }
+    fun insert(team: Team): Long = TeamInsertAsyncTask(teamDao).execute(team).get()
 
-    fun getTeamsForTournament(id: Long): LiveData<List<Team>> {
-        return tournamentTeamJoinDao.getTeamsForTournament(id)
-    }
-
+    fun getTeamsForTournament(id: Long): LiveData<List<Team>> = tournamentTeamJoinDao.getTeamsForTournament(id)
 
     fun insertTeamToTournament(team: Team, tournamentId: Long) {
         val tournamentTeamJoin = TournamentTeamJoin(tournamentId, team.teamId)
@@ -38,9 +31,9 @@ class TeamRepository(val context: Context) {
     }
 }
 
-class TeamInsertAsyncTask(private val teamDao: TeamDao) : AsyncTask<Team, Void, Unit>() {
-    override fun doInBackground(vararg team: Team) {
-        teamDao.insert(team[0])
+class TeamInsertAsyncTask(private val teamDao: TeamDao) : AsyncTask<Team, Void, Long>() {
+    override fun doInBackground(vararg team: Team): Long {
+        return teamDao.insert(team[0])
     }
 }
 

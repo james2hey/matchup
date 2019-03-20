@@ -7,8 +7,7 @@ import me.jamestoohey.matchup.data.entity.Team
 import me.jamestoohey.matchup.repository.TeamRepository
 
 class TeamViewModel(application: Application): AndroidViewModel(application) {
-    private val teamRepository: TeamRepository =
-        TeamRepository(application)
+    private val teamRepository: TeamRepository = TeamRepository(application)
     private val teams: LiveData<List<Team>>
 
     init {

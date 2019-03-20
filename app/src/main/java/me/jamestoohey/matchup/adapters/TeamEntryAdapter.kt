@@ -26,17 +26,13 @@ class TeamEntryAdapter(
         notifyDataSetChanged()
     }
 
-    override fun getCount(): Int {
-        return dataSource.size
-    }
+    override fun getCount(): Int = dataSource.size
 
-    override fun getItem(position: Int): Any {
-        return dataSource[position]
-    }
 
-    override fun getItemId(position: Int): Long {
-        return position.toLong()
-    }
+    override fun getItem(position: Int): Team = dataSource[position]
+
+    override fun getItemId(position: Int): Long = position.toLong()
+
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view: View
@@ -46,14 +42,13 @@ class TeamEntryAdapter(
 
             holder = ViewHolder()
             holder.teamName = view.findViewById(R.id.list_item_team_name) as TextView
-
             view.tag = holder
         } else {
             view = convertView
             holder = convertView.tag as ViewHolder
         }
         val teamName: TextView = holder.teamName
-        val team = getItem(position) as Team
+        val team = getItem(position)
         teamName.text = team.name
 
         view.setOnClickListener{

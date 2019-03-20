@@ -11,6 +11,7 @@ import android.widget.ListView
 import me.jamestoohey.matchup.R
 import me.jamestoohey.matchup.adapters.TeamEntryAdapter
 import me.jamestoohey.matchup.data.entity.Team
+import me.jamestoohey.matchup.viewmodel.MatchViewModel
 import me.jamestoohey.matchup.viewmodel.TeamViewModel
 
 class TournamentTeamsActivity : AppCompatActivity() {
@@ -20,6 +21,8 @@ class TournamentTeamsActivity : AppCompatActivity() {
     private lateinit var listView: ListView
     private lateinit var listAdapter: TeamEntryAdapter
     private lateinit var teamViewModel: TeamViewModel
+    private lateinit var matchViewModel: MatchViewModel
+    private lateinit var teamsInTournament: List<Team>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,13 +36,16 @@ class TournamentTeamsActivity : AppCompatActivity() {
 
         teamViewModel = ViewModelProviders.of(this).get(TeamViewModel::class.java)
         teamViewModel.getTeamsForTournament(tournamentId).observe(this, Observer<List<Team>> {
-            if (it != null) {
-                listAdapter.setTeams(it.toList())
-            } else {
-                listAdapter.setTeams(emptyList())
-            }
+            teamsInTournament = it ?: emptyList()
+            listAdapter.setTeams(teamsInTournament)
+//            if (it != null) {
+//                listAdapter.setTeams(it)
+//            } else {
+//                listAdapter.setTeams(emptyList())
+//            }
 
         })
+        matchViewModel = ViewModelProviders.of(this).get(MatchViewModel::class.java)
 
         generateTournamentButton = findViewById(R.id.generate_tournament)
         addTeamsButton = findViewById(R.id.add_teams_button)
@@ -51,10 +57,14 @@ class TournamentTeamsActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        generateTournamentButton.setOnClickListener {
+            matchViewModel.generateMatchesForTournament(tournamentId, teamsInTournament)
 
-    }
+            val intent = Intent(this, MatchActivity::class.java)
+            intent.putExtra("tournament_id", tournamentId)
+            startActivity(intent)
+        }
 
-    override fun onResume() {
-        super.onResume()
+
     }
 }

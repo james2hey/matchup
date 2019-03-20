@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.*
 import android.arch.lifecycle.ViewModelProviders
+import android.support.v7.widget.DividerItemDecoration
+import android.support.v7.widget.LinearLayoutManager
 import me.jamestoohey.matchup.R
 import me.jamestoohey.matchup.adapters.TournamentListAdapter
 import me.jamestoohey.matchup.data.entity.Tournament
@@ -26,7 +28,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         tournamentViewModel = ViewModelProviders.of(this).get(TournamentViewModel::class.java)
-        val tournamentId = tournamentViewModel.insert(Tournament("World Cup", true))
 
         tournamentName = findViewById(R.id.tournament_name)
 //        groupStages = findViewById(R.id.group_stages)
@@ -52,11 +53,11 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        nextButton.setOnClickListener {
-            val intent = Intent(this, TournamentTeamsActivity::class.java)
-            intent.putExtra("tournament_name", tournamentName.text.toString())
-            intent.putExtra("tournament_id", tournamentId)
-            startActivity(intent)
-        }
+//        nextButton.setOnClickListener {
+//            val intent = Intent(this, TournamentTeamsActivity::class.java)
+//            intent.putExtra("tournament_name", tournamentName.text.toString())
+//            intent.putExtra("tournament_id", tournamentId) //TODO make this use the inserted tournament id lul
+//            startActivity(intent)
+//        }
     }
 }

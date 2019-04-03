@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import me.jamestoohey.matchup.R
 import me.jamestoohey.matchup.data.entity.Team
 import me.jamestoohey.matchup.viewmodel.NewTeamViewModel
@@ -69,9 +70,11 @@ class AddTeamFragment: Fragment() {
                     team.teamId = teamId
                     newTeamViewModel.update(team)
                 }
+
+                Toast.makeText(activity, "Success", Toast.LENGTH_LONG).show()
                 activity?.finish()
             } else {
-//                Toast.makeText(this, "Enter a team name!", Toast.LENGTH_LONG).show()
+                Toast.makeText(activity, "Enter a team name!", Toast.LENGTH_LONG).show()
             }
         }
         teamImageView.setOnClickListener {

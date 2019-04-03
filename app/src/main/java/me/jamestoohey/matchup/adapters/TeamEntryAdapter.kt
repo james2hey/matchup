@@ -31,7 +31,7 @@ class TeamEntryAdapter(
 
     override fun getItem(position: Int): Team = dataSource[position]
 
-    override fun getItemId(position: Int): Long = position.toLong()
+    override fun getItemId(position: Int): Long = dataSource[position].teamId
 
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {

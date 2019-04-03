@@ -20,8 +20,8 @@ class TournamentTeamsViewModel(application: Application): AndroidViewModel(appli
         matchRepository.deleteMatchesForTournament(tournamentId)
         val numberOfTeams = teamList.size
         val numberOfMatches = calculateNumberOfMatches(numberOfTeams)
-        createInitialMatches(teamList, tournamentId)
-        createFinals(numberOfMatches, tournamentId)
+        val matchIdList = createInitialMatches(numberOfMatches, teamList, tournamentId)
+        createFinals(numberOfMatches, tournamentId, matchIdList)
     }
 
     /**
@@ -33,42 +33,52 @@ class TournamentTeamsViewModel(application: Application): AndroidViewModel(appli
         return (Math.pow(2.0, ceilOfTeams) - 1).toInt()
     }
 
-    private fun createInitialMatches(teamList: List<Team>, tournamentId: Long) {
+    private fun createInitialMatches(numberOfMatches: Int, teamList: List<Team>, tournamentId: Long): ArrayList<Long> {
         val shuffledTeams = teamList.shuffled()
-        val initialMatches: List<List<Team>> = shuffledTeams.chunked(2)
+        val initialMatches: ArrayList<List<Team>> = shuffledTeams.chunked(2) as ArrayList<List<Team>>
 
+        val numberOfInitialMatches = (numberOfMatches + 1) / 2
+        while(initialMatches.size < numberOfInitialMatches) {
+            initialMatches.add(emptyList())
+        }
+
+        val matchIdList: ArrayList<Long> = ArrayList()
         var matchNumber = 1
         initialMatches.forEach {
-            if (it.size == 2) {
-                val homeTeam = it[0]
-                val awayTeam = it[1]
-                matchRepository.insertMatch(Match(tournamentId, homeTeam.teamId, awayTeam.teamId, "Match ${matchNumber++}"))
-            } else if (it.size == 1) {
-                val homeTeam = it[0]
-                matchRepository.insertMatch(Match(tournamentId, homeTeam.teamId, null, "Match ${matchNumber++}"))
+            val match = when(it.size) {
+                2 -> Match(tournamentId, it[0].teamId, it[1].teamId, "Match ${matchNumber++}", null, null)
+                1 -> Match(tournamentId, it[0].teamId, null, "Match ${matchNumber++}", null, null)
+                0 -> Match(tournamentId, null, null, "Match ${matchNumber++}", null, null)
+                else -> throw Error("Invalid initial match")
             }
+            val id = matchRepository.insertMatch(match)
+            matchIdList.add(id)
         }
+        return matchIdList
     }
 
-    private fun createFinals(numberOfMatches: Int, tournamentId: Long) {
+    private fun createFinals(numberOfMatches: Int, tournamentId: Long, matchIdList: ArrayList<Long>) {
         var numberOfFinals = numberOfMatches / 2
         var finalNumber = 1
+        var matchIndex = 0
 
         while (numberOfFinals > 0) {
-            when(numberOfFinals) {
-                1 -> matchRepository.insertMatch(Match(tournamentId, null, null, "Final"))
+            val match = when(numberOfFinals) {
+                1 -> Match(tournamentId, null, null, "Final", matchIdList[matchIndex++], matchIdList[matchIndex++])
                 in 2..3 -> {
                     if (finalNumber > 2) finalNumber = 1
-                    matchRepository.insertMatch(Match(tournamentId, null, null, "Semi-final ${finalNumber++}"))
+                    Match(tournamentId, null, null, "Semi-final ${finalNumber++}", matchIdList[matchIndex++], matchIdList[matchIndex++])
                 }
                 in 4..7 -> {
                     if (finalNumber > 4) finalNumber = 1
-                    matchRepository.insertMatch(Match(tournamentId, null, null, "Quarter-final ${finalNumber++}"))
+                    Match(tournamentId, null, null, "Quarter-final ${finalNumber++}", matchIdList[matchIndex++], matchIdList[matchIndex++])
                 }
                 else -> {
-                    matchRepository.insertMatch(Match(tournamentId, null, null, "Match ${finalNumber++}"))
+                    Match(tournamentId, null, null, "Match ${finalNumber++}", matchIdList[matchIndex++], matchIdList[matchIndex++])
                 }
             }
+            val id = matchRepository.insertMatch(match)
+            matchIdList.add(id)
             numberOfFinals--
         }
     }

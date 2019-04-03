@@ -13,7 +13,9 @@ data class Match(
     var toid: Long,
     var htid: Long?,
     var atid: Long?,
-    var matchName: String
+    var matchName: String,
+    var htMatch: Long?,
+    var atMatch: Long?
 ) {
     @PrimaryKey(autoGenerate = true) var matchId: Long = 0
     @ColumnInfo(name = "home_goals") var homeGoals: Int? = null

@@ -30,21 +30,13 @@ class TeamEntryCheckedAdapter(
         notifyDataSetChanged()
     }
 
-    fun getChangedTeams(): List<Team> {
-        return stateChangeSet.toList()
-    }
+    fun getChangedTeams(): List<Team> = stateChangeSet.toList()
 
-    override fun getCount(): Int {
-        return dataSource.size
-    }
+    override fun getCount(): Int = dataSource.size
 
-    override fun getItem(position: Int): Any {
-        return dataSource[position]
-    }
+    override fun getItem(position: Int): Team = dataSource[position]
 
-    override fun getItemId(position: Int): Long {
-        return position.toLong()
-    }
+    override fun getItemId(position: Int): Long = dataSource[position].teamId
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view: View
@@ -64,9 +56,10 @@ class TeamEntryCheckedAdapter(
         val teamName: TextView = holder.teamName
         val checkBox: CheckBox = holder.checked
 
-        val team = getItem(position) as Team
+        val team = getItem(position)
         teamName.text = team.name
         checkBox.isChecked = teamsToCheck.contains(team)
+        checkBox.isFocusable = false
 
         checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
             stateChangeSet = if(stateChangeSet.contains(team)) stateChangeSet.minus(team) else stateChangeSet.plus(team)

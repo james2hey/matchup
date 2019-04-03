@@ -29,11 +29,21 @@ class TeamRepository(val context: Context) {
         val tournamentTeamJoin = TournamentTeamJoin(tournamentId, team.teamId)
         TeamToTournamentDeleteAsyncTask(tournamentTeamJoinDao).execute(tournamentTeamJoin)
     }
+
+    fun getTeamById(id: Long): LiveData<Team?> = teamDao.getTeamById(id)
+
+    fun update(team: Team) { TeamUpdateAsyncTask(teamDao).execute(team) }
 }
 
 class TeamInsertAsyncTask(private val teamDao: TeamDao) : AsyncTask<Team, Void, Long>() {
     override fun doInBackground(vararg team: Team): Long {
         return teamDao.insert(team[0])
+    }
+}
+
+class TeamUpdateAsyncTask(private val teamDao: TeamDao): AsyncTask<Team, Void, Unit>() {
+    override fun doInBackground(vararg team: Team) {
+        teamDao.update(team[0])
     }
 }
 

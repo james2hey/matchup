@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="matchup" translatable="false">PartidoArriba</string>
+    <string name="app_name" translatable="false">partidoarriba</string>
+    <string name="tournament_name" translatable="false">Torneo nombre</string>
+    <string name="group_stages" translatable="false">Etapas de groupo</string>
+    <string name="confirm" translatable="false">Confirmar</string>
+    <string name="number_of_teams" translatable="false">Número de equipos</string>
+    <string name="title_activity_scrolling" translatable="false">Desplazamiento de actividad</string>
+    <string name="action_settings" translatable="false">Ajustes</string>
+    <string name="team_logo" translatable="false">logo del equipo</string>
+    <string name="bye" translatable="false">BYE</string>
+    <string name="tbc" translatable="false">PSC</string>
+    <string name="create_new_team" translatable="false">crear nuevo equipo</string>
+    <string name="cancel" translatable="false">cancelar</string>
+    <string name="ok" translatable="false">De acuerdo</string>
+    <string name="create" translatable="false">Creta</string>
+    <string name="new_tournament" translatable="false">Nuevo torneo</string>
+    <string name="add" translatable="false">Añadir</string>
+    <string name="team_name" translatable="false">Nombre del equipo</string>
+    <string name="generate_tournament" translatable="false">Generar torneo</string>
+    <string name="blank" translatable="false">-</string>
+    <string name="add_one_team_per_line">Agregar un equipo por línea</string>
+</resources>

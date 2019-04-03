@@ -34,9 +34,8 @@ class TournamentListAdapter(
         return dataSource[position]
     }
 
-    override fun getItemId(position: Int): Long {
-        return position.toLong()
-    }
+    override fun getItemId(position: Int): Long = dataSource[position].tournamentId
+
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view: View

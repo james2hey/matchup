@@ -61,7 +61,6 @@ class TournamentTeamsActivity : AppCompatActivity() {
 
         generateTournamentButton.setOnClickListener {
             tournamentTeamsViewModel.generateMatchesForTournament(tournamentId, teamsInTournament)
-
             val intent = Intent(this, MatchActivity::class.java)
             intent.putExtra("tournament_name", tournamentName)
             intent.putExtra("tournament_id", tournamentId)

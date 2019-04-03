@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
         listView.adapter = listAdapter
 
         observeViewModel()
-        setButtonListeners()
+        setListeners()
     }
 
     private fun observeViewModel() {
@@ -45,8 +45,8 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun setButtonListeners() {
-        listView.setOnItemClickListener { parent, view, position, id ->
+    private fun setListeners() {
+        listView.setOnItemClickListener { _, _, position, _ ->
             val selectedTournament = listAdapter.getItem(position)
             val intent = Intent(this, TournamentTeamsActivity::class.java)
             intent.putExtra("tournament_name", selectedTournament.title)

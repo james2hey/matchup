@@ -3,8 +3,6 @@ package me.jamestoohey.matchup.repository
 import android.arch.lifecycle.LiveData
 import android.content.Context
 import android.os.AsyncTask
-import android.util.Log
-import me.jamestoohey.matchup.MatchModel
 import me.jamestoohey.matchup.data.AppDatabase
 import me.jamestoohey.matchup.data.dao.MatchDao
 import me.jamestoohey.matchup.data.entity.Match
@@ -17,11 +15,9 @@ class MatchRepository(val context: Context) {
         return matchDao.getAllMatchesForTournament(tournamentId)
     }
 
-    fun getAllMatchModelsForTournament(tournamentId: Long): LiveData<List<MatchModel>> = matchDao.getAllMatchesModelsFromTournament(tournamentId)
+    fun insertMatch(match: Match): Long = MatchInsertAsyncTask(matchDao).execute(match).get()
 
-    fun insertMatch(match: Match) {
-        MatchInsertAsyncTask(matchDao).execute(match)
-    }
+    fun getMatchById(id: Long): LiveData<Match> = matchDao.getMatchById(id)
 
     fun deleteMatches(matches: List<Match>) {
         MatchDeleteAsyncTask(matchDao).execute(matches)
@@ -33,16 +29,15 @@ class MatchRepository(val context: Context) {
 
 }
 
-class MatchInsertAsyncTask(private val matchDao: MatchDao) : AsyncTask<Match, Void, Unit>() {
-    override fun doInBackground(vararg match: Match) {
-        matchDao.insert(match[0])
+class MatchInsertAsyncTask(private val matchDao: MatchDao) : AsyncTask<Match, Void, Long>() {
+    override fun doInBackground(vararg match: Match): Long {
+        return matchDao.insert(match[0])
     }
 }
 
 class MatchDeleteAsyncTask(private val matchDao: MatchDao) : AsyncTask<List<Match>, Void, Unit>() {
     override fun doInBackground(vararg matches: List<Match>) {
         matches[0].forEach {
-            Log.d("MATCH", it.matchName)
             matchDao.delete(it)
         }
     }

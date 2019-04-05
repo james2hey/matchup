@@ -1,6 +1,7 @@
 package me.jamestoohey.matchup.adapters
 
 import android.content.Context
+import android.net.Uri
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
@@ -42,6 +43,22 @@ class MatchAdapter(val context: Context): RecyclerView.Adapter<MatchViewHolder>(
     override fun onBindViewHolder(holder: MatchViewHolder, i: Int) {
         holder.matchName.text = matches[i].matchName
         setTeamNames(holder, i)
+        setTeamImages(holder, i)
+    }
+
+    private fun setTeamImages(holder: MatchViewHolder, i: Int) {
+        val homeTeam = matches[i].homeTeam
+        val awayTeam = matches[i].awayTeam
+
+        if (homeTeam?.imagePath != null) {
+            val uri = Uri.parse(homeTeam.imagePath)
+            holder.homeTeamImage.setImageURI(uri)
+        }
+
+        if (awayTeam?.imagePath != null) {
+            val uri = Uri.parse(awayTeam.imagePath)
+            holder.awayTeamImage.setImageURI(uri)
+        }
     }
 
     private fun setTeamNames(holder: MatchViewHolder, i: Int) {

@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="me.jamestoohey.matchup">
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
 
     <application
             android:allowBackup="true"
@@ -10,7 +13,7 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
         <activity android:name=".activities.MatchActivity"
-                  android:parentActivityName=".activities.TournamentTeamsActivity">
+                  android:parentActivityName=".activities.MainActivity">
         </activity>
         <activity android:name=".activities.SelectTeamsActivity">
         </activity>
@@ -26,7 +29,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.AddTeamsActivity"
-                  android:parentActivityName=".activities.SelectTeamsActivity"/>
+                  android:parentActivityName=".activities.SelectTeamsActivity"
+                />
     </application>
+    
 
 </manifest>

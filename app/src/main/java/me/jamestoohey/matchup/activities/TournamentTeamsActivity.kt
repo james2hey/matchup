@@ -56,6 +56,7 @@ class TournamentTeamsActivity : AppCompatActivity() {
         addTeamsButton.setOnClickListener {
             val intent = Intent(this, SelectTeamsActivity::class.java)
             intent.putExtra("tournament_id", tournamentId)
+
             startActivity(intent)
         }
 

@@ -25,8 +25,8 @@ class SelectTeamsActivity : AppCompatActivity() {
     private lateinit var listAdapter: TeamEntryCheckedAdapter
     private lateinit var selectTeamsViewModel: SelectTeamsViewModel
     private lateinit var listView: ListView
-    private lateinit var teamsForTournament: List<Team>
-    private lateinit var allTeams: List<Team>
+    private var teamsForTournament: List<Team> = emptyList()
+    private var allTeams: List<Team> = emptyList()
     private var tournamentId: Long = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,7 +43,6 @@ class SelectTeamsActivity : AppCompatActivity() {
         tournamentId = intent.getLongExtra("tournament_id", -1)
         title = "Select Teams"
         setListeners()
-
         observeViewModel()
     }
 

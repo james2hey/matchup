@@ -3,6 +3,7 @@ package me.jamestoohey.matchup.fragments
 import android.app.Activity.RESULT_OK
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
+import android.content.Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION
 import android.graphics.Bitmap
 import android.media.Image
 import android.net.Uri
@@ -85,6 +86,7 @@ class AddTeamFragment: Fragment() {
                 type = "image/*"
                 action = Intent.ACTION_OPEN_DOCUMENT
             }
+
             startActivityForResult(intent, 0)
         }
     }
@@ -96,7 +98,11 @@ class AddTeamFragment: Fragment() {
             return
         }
         val uri = data.data
-        teamImageView.setImageURI(uri)
-        teamImageURI = uri?.toString()
+        if (uri != null) {
+            context?.contentResolver?.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            teamImageView.setImageURI(uri)
+            teamImageURI = uri?.toString()
+        }
+
     }
 }

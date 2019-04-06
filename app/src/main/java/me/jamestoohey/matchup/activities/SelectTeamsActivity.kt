@@ -38,6 +38,19 @@ class SelectTeamsActivity : AppCompatActivity() {
         listView = findViewById(R.id.tournament_team_checked_list)
         searchView = findViewById(R.id.search_view)
 
+        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+            override fun onQueryTextChange(newText: String?): Boolean {
+                listAdapter.filter.filter(newText)
+                return false
+            }
+
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                listAdapter.filter.filter(query)
+                return false
+            }
+
+        })
+
         listAdapter = TeamEntryCheckedAdapter(this)
         listView.adapter = listAdapter
         tournamentId = intent.getLongExtra("tournament_id", -1)
@@ -62,8 +75,8 @@ class SelectTeamsActivity : AppCompatActivity() {
 
     private fun setListeners() {
         okButton.setOnClickListener {
-            val changedTeams = listAdapter.getChangedTeams()
-            selectTeamsViewModel.updateTeamsInTournament(teamsForTournament, changedTeams, tournamentId)
+            val checkedTeams = listAdapter.getCheckedTeams()
+            selectTeamsViewModel.updateTeamsInTournament(teamsForTournament, checkedTeams, tournamentId)
             finish()
         }
         cancelButton.setOnClickListener {

@@ -35,7 +35,7 @@ class AddBatchTeamsFragment: Fragment() {
                 val teamStringList: List<String> = enteredText.split("\n")
                 teamStringList.forEach {
                     if (validTeamName(it)) {
-                        newTeamViewModel.insert(Team(it, ""))
+                        newTeamViewModel.insert(Team(it, null))
                     }
                 }
                 Toast.makeText(activity, "Success", Toast.LENGTH_LONG).show()

@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.TextView
 import me.jamestoohey.matchup.models.MatchModel
 import me.jamestoohey.matchup.viewholder.MatchViewHolder
@@ -47,18 +48,43 @@ class MatchAdapter(val context: Context): RecyclerView.Adapter<MatchViewHolder>(
     }
 
     private fun setTeamImages(holder: MatchViewHolder, i: Int) {
-        val homeTeam = matches[i].homeTeam
-        val awayTeam = matches[i].awayTeam
+        val match = matches[i]
+        val homeTeam = match.homeTeam
+        val awayTeam = match.awayTeam
+
+//        imageView.setImageURI(null)
+//        imageView.setBackgroundResource(0)
+//        if (team.imagePath != null) {
+//            val uri = Uri.parse(team.imagePath)
+//            imageView.setImageURI(uri)
+//        } else {
+//            imageView.setBackgroundResource(R.drawable.placeholder_team)
+//        }
+        clearImages(holder)
 
         if (homeTeam?.imagePath != null) {
             val uri = Uri.parse(homeTeam.imagePath)
             holder.homeTeamImage.setImageURI(uri)
+        } else {
+            holder.homeTeamImage.setBackgroundResource(R.drawable.placeholder_team)
         }
 
         if (awayTeam?.imagePath != null) {
             val uri = Uri.parse(awayTeam.imagePath)
             holder.awayTeamImage.setImageURI(uri)
+        } else {
+            holder.awayTeamImage.setBackgroundResource(R.drawable.placeholder_team)
         }
+
+        holder.homeTeamImage.startAnimation(AnimationUtils.loadAnimation(context, R.anim.test_animation))
+        holder.awayTeamImage.startAnimation(AnimationUtils.loadAnimation(context, R.anim.test_animation))
+    }
+
+    private fun clearImages(holder: MatchViewHolder) {
+        holder.homeTeamImage.setImageURI(null)
+        holder.awayTeamImage.setImageURI(null)
+        holder.homeTeamImage.setBackgroundResource(0)
+        holder.awayTeamImage.setBackgroundResource(0)
     }
 
     private fun setTeamNames(holder: MatchViewHolder, i: Int) {

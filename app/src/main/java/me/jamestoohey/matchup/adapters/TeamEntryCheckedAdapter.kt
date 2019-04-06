@@ -1,30 +1,43 @@
 package me.jamestoohey.matchup.adapters
 
 import android.content.Context
-import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.net.Uri
-import android.os.ParcelFileDescriptor
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
-import android.widget.CheckBox
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import me.jamestoohey.matchup.R
 import me.jamestoohey.matchup.data.entity.Team
-import java.io.FileDescriptor
 
-class TeamEntryCheckedAdapter(
-    context: Context): BaseAdapter() {
+class TeamEntryCheckedAdapter(private var context: Context): BaseAdapter(), Filterable {
+    override fun getFilter(): Filter {
+        return object: Filter() {
+            override fun performFiltering(constraint: CharSequence?): FilterResults {
+                val filterResults = FilterResults()
+                return if (constraint.isNullOrEmpty()) {
+                    filteredData = dataSource
+                    filterResults.values = filteredData
+                    filterResults
+
+                } else {
+                    val filteredData = dataSource.filter { it.name.startsWith(constraint.toString(), true) }
+                    filterResults.values = filteredData
+                    filterResults
+                }
+            }
+
+            override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
+                filteredData = results?.values as List<Team>
+                notifyDataSetChanged()
+            }
+
+        }
+    }
+
     private var dataSource = emptyList<Team>()
-    private var teamsToCheck = emptyList<Team>()
-    private var stateChangeSet = emptySet<Team>()
-    private var context = context
-
+    private var filteredData = emptyList<Team>()
+    private var checkedTeams: Set<Team> = emptySet()
+//    private var stateChangeSet = emptySet<Team>()
     private val inflater: LayoutInflater
             = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
@@ -36,16 +49,21 @@ class TeamEntryCheckedAdapter(
 
     fun setTeams(teams: List<Team>) {
         dataSource = teams
+        filteredData = teams
         notifyDataSetChanged()
     }
 
-    fun getChangedTeams(): List<Team> = stateChangeSet.toList()
+    fun setCheckedTeams(teamsForTournament: List<Team>) {
+        checkedTeams = teamsForTournament.toSet()
+    }
 
-    override fun getCount(): Int = dataSource.size
+    fun getCheckedTeams(): List<Team> = checkedTeams.toList()
 
-    override fun getItem(position: Int): Team = dataSource[position]
+    override fun getCount(): Int = filteredData.size
 
-    override fun getItemId(position: Int): Long = dataSource[position].teamId
+    override fun getItem(position: Int): Team = filteredData[position]
+
+    override fun getItemId(position: Int): Long = filteredData[position].teamId
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view: View
@@ -69,26 +87,31 @@ class TeamEntryCheckedAdapter(
 
         val team = getItem(position)
         teamName.text = team.name
-        checkBox.isChecked = teamsToCheck.contains(team)
+
         checkBox.isFocusable = false
+        checkBox.isChecked = checkedTeams.contains(team)
 
-        if (team.imagePath != null) {
-            Log.d("URL", team.imagePath)
+        checkBox.setOnClickListener {
+            Log.d("CHECK", checkBox.isChecked.toString())
 
-            val uri = Uri.parse(team.imagePath)
-            imageView.setImageURI(uri)
+            val isChecked = checkBox.isChecked
+            checkedTeams = if (isChecked) checkedTeams.plusElement(team) else checkedTeams.minusElement(team)
         }
 
 
-        checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
-            stateChangeSet = if(stateChangeSet.contains(team)) stateChangeSet.minus(team) else stateChangeSet.plus(team)
+        imageView.setImageURI(null)
+        imageView.setBackgroundResource(0)
+        if (team.imagePath != null) {
+            // TODO find if this needs to happen everywhere.
+            val permittedUri = context.contentResolver.persistedUriPermissions.filter { it.uri.toString() == team.imagePath }.first().uri
+            imageView.setImageURI(permittedUri)
+        } else {
+            imageView.setBackgroundResource(R.drawable.placeholder_team)
         }
 
         return view
     }
 
-    fun setCheckedTeams(teamsForTournament: List<Team>) {
-        teamsToCheck = teamsForTournament
-    }
+
 
 }

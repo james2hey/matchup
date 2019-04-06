@@ -13,7 +13,7 @@ import me.jamestoohey.matchup.data.dao.TournamentDao
 import me.jamestoohey.matchup.data.entity.Match
 import me.jamestoohey.matchup.data.entity.Tournament
 
-@Database(entities = [Team::class, Tournament::class, TournamentTeamJoin::class, Match::class], version = 7)
+@Database(entities = [Team::class, Tournament::class, TournamentTeamJoin::class, Match::class], version = 8)
 abstract class AppDatabase: RoomDatabase() {
     abstract fun teamDao(): TeamDao
     abstract fun tournamentDao(): TournamentDao

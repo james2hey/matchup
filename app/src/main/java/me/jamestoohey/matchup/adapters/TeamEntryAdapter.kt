@@ -56,14 +56,15 @@ class TeamEntryAdapter(
         val team = getItem(position)
         teamName.text = team.name
 
+        imageView.setImageURI(null)
+        imageView.setBackgroundResource(0)
         if (team.imagePath != null) {
             val uri = Uri.parse(team.imagePath)
             imageView.setImageURI(uri)
+        } else {
+            imageView.setBackgroundResource(R.drawable.placeholder_team)
         }
 
-        view.setOnClickListener{
-
-        }
         return view
     }
 

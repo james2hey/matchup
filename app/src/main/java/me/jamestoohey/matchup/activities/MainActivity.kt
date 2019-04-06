@@ -48,7 +48,10 @@ class MainActivity : AppCompatActivity() {
     private fun setListeners() {
         listView.setOnItemClickListener { _, _, position, _ ->
             val selectedTournament = listAdapter.getItem(position)
-            val intent = Intent(this, TournamentTeamsActivity::class.java)
+            val intent = Intent(this, TournamentTeamsActivity::class.java).apply {
+                type = "image/*"
+                action = Intent.ACTION_OPEN_DOCUMENT
+            }
             intent.putExtra("tournament_name", selectedTournament.title)
             intent.putExtra("tournament_id", selectedTournament.tournamentId)
             startActivity(intent)

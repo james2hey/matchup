@@ -16,5 +16,4 @@ interface TournamentDao {
 
     @Insert
     fun insert(team: Tournament): Long
-    //    fun
 }

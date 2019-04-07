@@ -9,9 +9,9 @@ import android.widget.*
 import me.jamestoohey.matchup.R
 import me.jamestoohey.matchup.data.entity.Team
 
-class TeamEntryCheckedAdapter(private var context: Context): BaseAdapter(), Filterable {
+class TeamEntryCheckedAdapter(private var context: Context) : BaseAdapter(), Filterable {
     override fun getFilter(): Filter {
-        return object: Filter() {
+        return object : Filter() {
             override fun performFiltering(constraint: CharSequence?): FilterResults {
                 val filterResults = FilterResults()
                 return if (constraint.isNullOrEmpty()) {
@@ -37,9 +37,8 @@ class TeamEntryCheckedAdapter(private var context: Context): BaseAdapter(), Filt
     private var dataSource = emptyList<Team>()
     private var filteredData = emptyList<Team>()
     private var checkedTeams: Set<Team> = emptySet()
-//    private var stateChangeSet = emptySet<Team>()
-    private val inflater: LayoutInflater
-            = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+    //    private var stateChangeSet = emptySet<Team>()
+    private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
     private class ViewHolder {
         lateinit var teamName: TextView
@@ -96,6 +95,7 @@ class TeamEntryCheckedAdapter(private var context: Context): BaseAdapter(), Filt
 
             val isChecked = checkBox.isChecked
             checkedTeams = if (isChecked) checkedTeams.plusElement(team) else checkedTeams.minusElement(team)
+            notifyDataSetChanged()
         }
 
 
@@ -103,7 +103,9 @@ class TeamEntryCheckedAdapter(private var context: Context): BaseAdapter(), Filt
         imageView.setBackgroundResource(0)
         if (team.imagePath != null) {
             // TODO find if this needs to happen everywhere.
-            val permittedUri = context.contentResolver.persistedUriPermissions.filter { it.uri.toString() == team.imagePath }.first().uri
+            val permittedUri =
+                context.contentResolver.persistedUriPermissions.filter { it.uri.toString() == team.imagePath }.first()
+                    .uri
             imageView.setImageURI(permittedUri)
         } else {
             imageView.setBackgroundResource(R.drawable.placeholder_team)
@@ -111,7 +113,6 @@ class TeamEntryCheckedAdapter(private var context: Context): BaseAdapter(), Filt
 
         return view
     }
-
 
 
 }

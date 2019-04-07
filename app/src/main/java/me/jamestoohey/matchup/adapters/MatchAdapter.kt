@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.widget.EditText
 import android.widget.TextView
 import me.jamestoohey.matchup.models.MatchModel
 import me.jamestoohey.matchup.viewholder.MatchViewHolder
@@ -27,17 +28,16 @@ class MatchAdapter(val context: Context): RecyclerView.Adapter<MatchViewHolder>(
         val inflater = LayoutInflater.from(context)
         val view = inflater.inflate(R.layout.match_item, parent, false)
 
-        val homeTeamScore: TextView = view.findViewById(R.id.home_team_score)
-        val awayTeamScoer: TextView = view.findViewById(R.id.away_team_score)
+        val homeTeamScore: EditText = view.findViewById(R.id.home_team_score)
+        val awayTeamScore: EditText = view.findViewById(R.id.away_team_score)
         val holder = MatchViewHolder(view)
 
-        view.setOnLongClickListener {
-            // somehow set the score
-            val selectedIndex = holder.adapterPosition
-            notifyItemChanged(selectedIndex)
-            Log.d("CLICKED", selectedIndex.toString())
-            true
-        }
+//        view.setOnLongClickListener {
+//            val selectedIndex = holder.adapterPosition
+//            notifyItemChanged(selectedIndex)
+//            Log.d("CLICKED", selectedIndex.toString())
+//            true
+//        }
         return holder
     }
 
@@ -51,15 +51,6 @@ class MatchAdapter(val context: Context): RecyclerView.Adapter<MatchViewHolder>(
         val match = matches[i]
         val homeTeam = match.homeTeam
         val awayTeam = match.awayTeam
-
-//        imageView.setImageURI(null)
-//        imageView.setBackgroundResource(0)
-//        if (team.imagePath != null) {
-//            val uri = Uri.parse(team.imagePath)
-//            imageView.setImageURI(uri)
-//        } else {
-//            imageView.setBackgroundResource(R.drawable.placeholder_team)
-//        }
         clearImages(holder)
 
         if (homeTeam?.imagePath != null) {

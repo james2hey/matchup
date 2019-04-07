@@ -3,15 +3,18 @@ package me.jamestoohey.matchup.activities
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
+import android.database.DataSetObserver
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
+import android.support.v7.app.AppCompatActivity
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.ListView
 import me.jamestoohey.matchup.R
 import me.jamestoohey.matchup.adapters.TeamEntryAdapter
 import me.jamestoohey.matchup.data.entity.Team
-import me.jamestoohey.matchup.viewmodel.MatchViewModel
 import me.jamestoohey.matchup.viewmodel.TournamentTeamsViewModel
 
 class TournamentTeamsActivity : AppCompatActivity() {
@@ -20,6 +23,7 @@ class TournamentTeamsActivity : AppCompatActivity() {
     private lateinit var addTeamsButton: FloatingActionButton
     private lateinit var listView: ListView
     private lateinit var listAdapter: TeamEntryAdapter
+    private lateinit var teamsCount: MenuItem
     private lateinit var tournamentTeamsViewModel: TournamentTeamsViewModel
     private lateinit var teamsInTournament: List<Team>
     private var tournamentId: Long = -1
@@ -67,5 +71,19 @@ class TournamentTeamsActivity : AppCompatActivity() {
             intent.putExtra("tournament_id", tournamentId)
             startActivity(intent)
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.tournament_teams_menu, menu)
+        teamsCount = menu.findItem(R.id.number_of_teams_in_tournament)
+        teamsCount.title = "(${listAdapter.count})"
+        listAdapter.registerDataSetObserver(object: DataSetObserver() {
+            override fun onChanged() {
+                super.onChanged()
+                teamsCount.title = "(${listAdapter.count})"
+            }
+        })
+        return true
     }
 }

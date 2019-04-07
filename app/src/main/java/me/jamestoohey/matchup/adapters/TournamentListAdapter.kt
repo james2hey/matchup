@@ -52,7 +52,7 @@ class TournamentListAdapter(
             holder = convertView.tag as ViewHolder
         }
         val tournamentName: TextView = holder.tournamentName
-        val tournament = getItem(position) as Tournament
+        val tournament = getItem(position)
         tournamentName.text = tournament.title
         return view
     }

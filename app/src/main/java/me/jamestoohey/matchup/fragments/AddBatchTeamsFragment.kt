@@ -39,7 +39,7 @@ class AddBatchTeamsFragment: Fragment() {
                     }
                 }
                 Toast.makeText(activity, "Success", Toast.LENGTH_LONG).show()
-                activity?.finish() // make success message
+                activity?.finish()
             } else {
                 Toast.makeText(activity, "No teams were entered!", Toast.LENGTH_LONG).show()
             }

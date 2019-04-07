@@ -31,7 +31,6 @@ class TeamEntryAdapter(
 
     override fun getCount(): Int = dataSource.size
 
-
     override fun getItem(position: Int): Team = dataSource[position]
 
     override fun getItemId(position: Int): Long = dataSource[position].teamId

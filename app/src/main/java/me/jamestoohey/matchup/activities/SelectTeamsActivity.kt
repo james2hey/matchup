@@ -3,20 +3,19 @@ package me.jamestoohey.matchup.activities
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
+import android.database.DataSetObserver
 import android.os.Bundle
-import android.util.Log
+import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.Button
 import android.widget.ListView
 import android.widget.SearchView
-import android.widget.Toast
 import me.jamestoohey.matchup.R
-import me.jamestoohey.matchup.viewmodel.SelectTeamsViewModel
 import me.jamestoohey.matchup.adapters.TeamEntryCheckedAdapter
 import me.jamestoohey.matchup.data.entity.Team
+import me.jamestoohey.matchup.viewmodel.SelectTeamsViewModel
 
 class SelectTeamsActivity : AppCompatActivity() {
     private lateinit var okButton: Button
@@ -25,6 +24,7 @@ class SelectTeamsActivity : AppCompatActivity() {
     private lateinit var listAdapter: TeamEntryCheckedAdapter
     private lateinit var selectTeamsViewModel: SelectTeamsViewModel
     private lateinit var listView: ListView
+    private lateinit var selectedTeamsCount: MenuItem
     private var teamsForTournament: List<Team> = emptyList()
     private var allTeams: List<Team> = emptyList()
     private var tournamentId: Long = -1
@@ -69,7 +69,7 @@ class SelectTeamsActivity : AppCompatActivity() {
 
         selectTeamsViewModel.getAllTeams().observe(this, Observer<List<Team>> {
             allTeams = it ?: emptyList()
-            listAdapter.setTeams(allTeams) //TODO allTeams.sortedBy { team -> !teamsForTournament.contains(team) }
+            listAdapter.setTeams(allTeams)
         })
     }
 
@@ -84,7 +84,6 @@ class SelectTeamsActivity : AppCompatActivity() {
         }
         listView.setOnItemLongClickListener { _, _, _, id ->
             val team = allTeams.find { it.teamId == id}
-            Toast.makeText(this, "Editing ${team?.name}", Toast.LENGTH_LONG).show()
             val intent = Intent(this, AddTeamsActivity::class.java)
             intent.putExtra("team_id", team?.teamId)
             intent.putExtra("team_name", team?.name)
@@ -97,6 +96,14 @@ class SelectTeamsActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater: MenuInflater = menuInflater
         inflater.inflate(R.menu.add_team_menu, menu)
+        selectedTeamsCount = menu.findItem(R.id.number_of_teams_selected)
+        selectedTeamsCount.title = "(${listAdapter.getCheckedTeams().size})"
+        listAdapter.registerDataSetObserver(object: DataSetObserver() {
+            override fun onChanged() {
+                super.onChanged()
+                selectedTeamsCount.title = "(${listAdapter.getCheckedTeams().size})"
+            }
+        })
         return true
     }
 
@@ -109,6 +116,4 @@ class SelectTeamsActivity : AppCompatActivity() {
             } else -> super.onOptionsItemSelected(item)
         }
     }
-
-
 }

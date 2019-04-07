@@ -12,7 +12,6 @@ class AddTeamsActivity: AppCompatActivity() {
     private lateinit var viewPager: ViewPager
     private lateinit var tabAdapter: TabAdapter
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tab_add_teams)

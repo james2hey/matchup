@@ -37,7 +37,6 @@ class TeamEntryCheckedAdapter(private var context: Context) : BaseAdapter(), Fil
     private var dataSource = emptyList<Team>()
     private var filteredData = emptyList<Team>()
     private var checkedTeams: Set<Team> = emptySet()
-    //    private var stateChangeSet = emptySet<Team>()
     private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
     private class ViewHolder {

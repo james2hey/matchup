@@ -74,10 +74,10 @@ class AddTeamFragment: Fragment() {
                     newTeamViewModel.update(team)
                 }
 
-                Toast.makeText(activity, "Success", Toast.LENGTH_LONG).show()
+                Toast.makeText(activity, context?.getString(R.string.success), Toast.LENGTH_LONG).show()
                 activity?.finish()
             } else {
-                Toast.makeText(activity, "Enter a team name!", Toast.LENGTH_LONG).show()
+                Toast.makeText(activity, context?.getString(R.string.no_teams_entered), Toast.LENGTH_LONG).show()
             }
         }
         teamImageView.setOnClickListener {

@@ -21,4 +21,8 @@
     <string name="generate_tournament" translatable="false">Generar torneo</string>
     <string name="blank" translatable="false">-</string>
     <string name="add_one_team_per_line">Agregar un equipo por línea</string>
+    <string name="success">éxito</string>
+    <string name="no_teams_entered">No se ingresaron equipos!</string>
+    <string name="no_team">Sin equipo</string>
+    <string name="add_teams">agregar equipos</string>
 </resources>

@@ -3,12 +3,10 @@ package me.jamestoohey.matchup.adapters
 import android.content.Context
 import android.net.Uri
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.EditText
-import android.widget.TextView
 import me.jamestoohey.matchup.models.MatchModel
 import me.jamestoohey.matchup.viewholder.MatchViewHolder
 import me.jamestoohey.matchup.R
@@ -67,8 +65,8 @@ class MatchAdapter(val context: Context): RecyclerView.Adapter<MatchViewHolder>(
             holder.awayTeamImage.setBackgroundResource(R.drawable.placeholder_team)
         }
 
-        holder.homeTeamImage.startAnimation(AnimationUtils.loadAnimation(context, R.anim.test_animation))
-        holder.awayTeamImage.startAnimation(AnimationUtils.loadAnimation(context, R.anim.test_animation))
+        holder.homeTeamImage.startAnimation(AnimationUtils.loadAnimation(context, R.anim.match_animation))
+        holder.awayTeamImage.startAnimation(AnimationUtils.loadAnimation(context, R.anim.match_animation))
     }
 
     private fun clearImages(holder: MatchViewHolder) {
@@ -85,8 +83,8 @@ class MatchAdapter(val context: Context): RecyclerView.Adapter<MatchViewHolder>(
             holder.awayTeamName.text = "W ${matches[i].awayMatch?.matchName}"
 
         } else if (matches[i].homeTeam == null && matches[i].awayTeam == null) {
-            holder.homeTeamName.text = "No Team"
-            holder.awayTeamName.text = "No Team"
+            holder.homeTeamName.text = context.getText(R.string.no_team)
+            holder.awayTeamName.text = context.getText(R.string.no_team)
         } else if (matches[i].awayTeam == null) {
             holder.homeTeamName.text = matches[i].homeTeam?.name
             holder.awayTeamName.text = context.getString(R.string.bye)

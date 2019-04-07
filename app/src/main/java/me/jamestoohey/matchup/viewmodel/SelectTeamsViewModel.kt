@@ -28,7 +28,6 @@ class SelectTeamsViewModel(application: Application): AndroidViewModel(applicati
                 teamRepository.insertTeamToTournament(it, tournamentId)
             }
         }
-
     }
 
 }

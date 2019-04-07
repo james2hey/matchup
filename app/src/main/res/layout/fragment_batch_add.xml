@@ -34,7 +34,7 @@
             android:text="@string/add_one_team_per_line"/>
 
     <Button
-            android:text="Add Teams"
+            android:text="@string/add_teams"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/add_batch_teams_button"

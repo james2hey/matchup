@@ -38,10 +38,10 @@ class AddBatchTeamsFragment: Fragment() {
                         newTeamViewModel.insert(Team(it, null))
                     }
                 }
-                Toast.makeText(activity, "Success", Toast.LENGTH_LONG).show()
+                Toast.makeText(activity, context?.getString(R.string.success), Toast.LENGTH_LONG).show()
                 activity?.finish()
             } else {
-                Toast.makeText(activity, "No teams were entered!", Toast.LENGTH_LONG).show()
+                Toast.makeText(activity, context?.getString(R.string.no_teams_entered), Toast.LENGTH_LONG).show()
             }
         }
         return view

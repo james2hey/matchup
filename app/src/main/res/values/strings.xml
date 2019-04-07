@@ -20,4 +20,8 @@
     <string name="generate_tournament">Generate Tournament</string>
     <string name="blank">-</string>
     <string name="add_one_team_per_line">Add one team per line</string>
+    <string name="success">Success</string>
+    <string name="no_teams_entered">No teams were entered!</string>
+    <string name="no_team">No Team</string>
+    <string name="add_teams">Add Teams</string>
 </resources>
